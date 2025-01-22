@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  api:
+    image: service:latest
+    ports:
+      - "8000:8000"
+    command: [ "python", "app/main.py" ]
+    env_file: ".env"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  bot:
+    image: service:latest
+    command: [ "python", "app/bot.py" ]
+    env_file: ".env"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres
+    env_file: '.env'
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres --quiet" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+networks:
+  default:
+    name: service_network
