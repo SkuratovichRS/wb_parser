@@ -1,2 +1,2 @@
 build:
-	docker build -t service:latest .
+	docker build -t skuroman/wb_parser:latest .

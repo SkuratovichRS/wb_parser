@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   api:
-    image: service:latest
+    image: skuroman/wb_parser:latest
     ports:
       - "8000:8000"
     command: [ "python", "app/main.py" ]
@@ -12,7 +12,7 @@ services:
         condition: service_healthy
 
   bot:
-    image: service:latest
+    image: skuroman/wb_parser:latest
     command: [ "python", "app/bot.py" ]
     env_file: ".env"
     depends_on:
